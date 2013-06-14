@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one or more
+ contributor license agreements.  See the NOTICE file distributed with
+ this work for additional information regarding copyright ownership.
+ The ASF licenses this file to You under the Apache License, Version 2.0
+ (the "License"); you may not use this file except in compliance with
+ the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<!--  
+ This is the Solr schema file. This file should be named "schema.xml" and
+ should be in the conf directory under the solr home
+ (i.e. ./solr/conf/schema.xml by default) 
+ or located where the classloader for the Solr webapp can find it.
+
+ This example schema is the recommended starting point for users.
+ It should be kept correct and concise, usable out-of-the-box.
+
+ For more information, on how to customize this file, please see
+ http://wiki.apache.org/solr/SchemaXml
+
+ PERFORMANCE NOTE: this schema includes many optional features and should not
+ be used for benchmarking.  To improve performance one could
+  - set stored="false" for all fields possible (esp large fields) when you
+    only need to search on the field but don't need to return the original
+    value.
+  - set indexed="false" if you don't need to search on the field, but only
+    return the field as a result of searching on other indexed fields.
+  - remove all unneeded copyField statements
+  - for best index size and searching performance, set "index" to false
+    for all general text fields, use copyField to copy them to the
+    catchall "text" field, and use that for searching.
+  - For maximum indexing performance, use the StreamingUpdateSolrServer
+    java client.
+  - Remember to run the JVM in server mode, and use a higher logging level
+    that avoids logging every request
+-->
+
+<schema name="example" version="0.0">
+    <types>
+        <fieldType sortMissingLast="true" name="string" class="solr.StrField"/>
+        <fieldType sortMissingLast="true" name="boolean" class="solr.BoolField"/>
+        <fieldType name="binary" class="solr.BinaryField"/>
+        <fieldType precisionStep="0" positionIncrementGap="0" name="int" class="solr.TrieIntField"/>
+        <fieldType precisionStep="0" positionIncrementGap="0" name="float" class="solr.TrieFloatField"/>
+        <fieldType precisionStep="0" positionIncrementGap="0" name="long" class="solr.TrieLongField"/>
+        <fieldType precisionStep="0" positionIncrementGap="0" name="double" class="solr.TrieDoubleField"/>
+        <fieldType precisionStep="8" positionIncrementGap="0" name="tint" class="solr.TrieIntField"/>
+        <fieldType precisionStep="8" positionIncrementGap="0" name="tfloat" class="solr.TrieFloatField"/>
+        <fieldType precisionStep="8" positionIncrementGap="0" name="tlong" class="solr.TrieLongField"/>
+        <fieldType precisionStep="8" positionIncrementGap="0" name="tdouble" class="solr.TrieDoubleField"/>
+        <fieldType precisionStep="0" positionIncrementGap="0" name="date" class="solr.TrieDateField"/>
+        <fieldType precisionStep="6" positionIncrementGap="0" name="tdate" class="solr.TrieDateField"/>
+        <fieldType name="pint" class="solr.IntField"/>
+        <fieldType name="plong" class="solr.LongField"/>
+        <fieldType name="pfloat" class="solr.FloatField"/>
+        <fieldType name="pdouble" class="solr.DoubleField"/>
+        <fieldType sortMissingLast="true" name="pdate" class="solr.DateField"/>
+        <fieldType sortMissingLast="true" name="sint" class="solr.SortableIntField"/>
+        <fieldType sortMissingLast="true" name="slong" class="solr.SortableLongField"/>
+        <fieldType sortMissingLast="true" name="sfloat" class="solr.SortableFloatField"/>
+        <fieldType sortMissingLast="true" name="sdouble" class="solr.SortableDoubleField"/>
+        <fieldType name="random" indexed="true" class="solr.RandomSortField"/>
+        <fieldType stored="false" name="ignored" multiValued="true" indexed="false" class="solr.StrField"/>
+        <fieldType subFieldSuffix="_d" name="point" dimension="2" class="solr.PointType"/>
+        <fieldType subFieldSuffix="_coordinate" name="location" class="solr.LatLonType"/>
+        <fieldType name="geohash" class="solr.GeoHashField"/>
+    </types>
+</schema>

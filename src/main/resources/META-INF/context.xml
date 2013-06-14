@@ -1,0 +1,22 @@
+<Context  >
+	<!--
+		Only if a context file does not exist for the application in 
+		the $CATALINA_HOME/conf/[enginename]/[hostname]/;
+		If the web application is packaged as a WAR then this
+		file will be automatically copied to 
+		$CATALINA_HOME/conf/[enginename]/[hostname]/ and renamed 
+		to match the application's context path. Once this file exists, 
+		it will not be replaced if a new WAR with a newer /META-INF/context.xml
+		is placed in the host's appBase.
+		
+		Once this file is located in $CATALINA_HOME/conf/[enginename]/[hostname]/
+		(either automatically during WAR expansion or manually during deployment)
+		The parameters defined here can be modified to match your configuration and
+		will not be override if a newer WAR is deployed.  
+			
+	 -->
+	 
+	<Parameter name="homedirectory" 
+		value="file:/Users/burns/Documents/workspace-sts-2.7.0.RELEASE/vpdmf/etc" />
+	
+</Context>

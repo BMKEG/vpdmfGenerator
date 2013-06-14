@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" >
+		
+   <!--
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+		Properties File
+		- this is the' neuarttest.properties'
+		  file located in the ${homedir}/etc.
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+	
+	<bean id="testEvaluationContext" class="org.springframework.expression.spel.support.StandardEvaluationContext">
+		<property name="variables">
+			<map>
+				<entry key="homedir" value="file:#{systemProperties['user.dir']}/etc" />
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="propertyPlaceholderConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+		
+			<list>
+				<value>#{testEvaluationContext.lookupVariable('homedir')}/bmkegtest.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="bmkegProperties" class="edu.isi.bmkeg.utils.springContext.BmkegProperties">
+		<property name="homeDirectory" value="#{testEvaluationContext.lookupVariable('homedir')}"/>
+		<property name="dbDriver" value="${bmkeg.dbDriver}"/>
+		<property name="dbUrl" value="${bmkeg.dbUrl}"/>
+		<property name="dbUser" value="${bmkeg.dbUser}"/>
+		<property name="dbPassword" value="${bmkeg.dbPassword}"/>
+		<property name="persistenceUnitName" value="${bmkeg.persistenceUnitName}"/>
+		<property name="workingDirectory" value="${bmkeg.workingDirectory}"/>
+	</bean>
+    		    
+</beans>

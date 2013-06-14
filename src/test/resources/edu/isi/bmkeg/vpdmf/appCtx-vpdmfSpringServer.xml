@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:annotation-config />
+ 
+ 	<bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>  
+
+	<import resource="classpath:Testcontext-inc.xml"/>
+
+    <context:component-scan base-package="edu.isi.bmkeg.vpdmf.model"/> 
+    
+    <bean id="contextApplicationContextProvider"
+		class="edu.isi.bmkeg.utils.springContext.ApplicationContextProvider"></bean>
+
+	<!--
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+		Persistence Unit
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<bean id="localDs" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="#{bmkegProperties.dbDriver}"/>
+    	<property name="jdbcUrl" value="#{bmkegProperties.dbUrl}"/>
+    	<property name="user" value="#{bmkegProperties.dbUser}"/>
+    	<property name="password" value="#{bmkegProperties.dbPassword}"/>
+    	
+    	<!-- c3p0 properties - required to workaround the mysql timeout issue -->
+    	<property name="acquireIncrement" value="3" />
+    	<property name="idleConnectionTestPeriod" value="14400" />
+    	<property name="maxIdleTime" value="25200" />
+    	<property name="maxPoolSize" value="15" />
+    	<property name="minPoolSize" value="3" />
+    	<property name="maxStatements" value="0" />
+    	<property name="preferredTestQuery" value="select 1;" />
+    	
+	</bean>
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="#{bmkegProperties.persistenceUnitName}" />
+		<property name="dataSource" ref="localDs"/>
+		
+		<!-- Added hbm2ddl to create new database every time -->
+		<property name="jpaPropertyMap">
+			<map>		
+<!-- 			<entry key="hibernate.hbm2ddl.auto" value="validate" /> -->
+				<entry key="hibernate.hbm2ddl.auto" value="none" />
+			</map>
+		</property>
+		
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<bean id="jpaConfigProcessor"
+		class="org.springframework.flex.core.io.JpaHibernateConfigProcessor" />
+ 
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+	    
+</beans>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view name="Term" type="Data">
+	<primitives>
+		<primitive name="Term">
+			<classes>
+				<class name="Term"/>
+			</classes>
+			<pvLinks>
+				<pvLink c1="Term" role="ontology" pv2="Ontology" c2="Ontology"/>
+				<pvLink c1="Term" role="definitionEditor" pv2="Curator" c2="Person"/>
+			</pvLinks>
+		</primitive>
+		<primitive lookupView="Ontology"/>
+		<primitive name="Curator" nullable="true">
+			<classes>
+				<class name="Person"/>
+			</classes>
+		</primitive>
+	</primitives>
+	<vpdmfLabel format="Term: $1$:$2$ ($3$)" />
+	<indexElements>
+		<indexElement pos="1" p="Ontology" c="Ontology" a="shortName" />
+		<indexElement pos="2" p="Term" c="Term" a="shortTermId" />
+		<indexElement pos="3" p="Term" c="Term" a="termValue" />
+	</indexElements>
+</view>
