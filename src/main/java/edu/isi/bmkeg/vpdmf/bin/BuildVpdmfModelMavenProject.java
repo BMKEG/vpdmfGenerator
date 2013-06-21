@@ -49,11 +49,9 @@ public class BuildVpdmfModelMavenProject {
 		VpdmfSpec firstSpecs = VPDMfGeneratorConverters.readVpdmfSpecFromPom(firstPomModel);
 
 		List<File> pomFiles = new ArrayList<File>();
-		List<String> pomPaths = new ArrayList<String>();
 		for (int i = 0; i < args.length - 2; i++) {
-			pomPaths.add(args[i]);
-			File specsFile = new File(args[i]);
-			pomFiles.add(specsFile);
+			File pomFile = new File(args[i].replaceAll("\\/$", "") + "/pom.xml");	
+			pomFiles.add(pomFile);
 		}
 
 		File dir = new File(args[args.length - 2]);
@@ -88,7 +86,7 @@ public class BuildVpdmfModelMavenProject {
 			File data = null;
 			if (vpdmfSpec.getData() != null) {
 				String dataPath = vpdmfSpec.getData().getPath();
-				data = new File(dataPath);
+				data = new File(pomFile.getParent() + "/" + dataPath);
 				if (!data.exists())
 					data = null;
 				else
