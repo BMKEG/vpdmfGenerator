@@ -78,6 +78,7 @@ public class BuildVpdmfMysqlMavenZipTest {
 		String[] args = new String[] { 
 				ftdSpecFile.getParent(),
 				"target",
+				"1.1.3-SNAPSHOT"
 				};
 		
 		BuildVpdmfMysqlMavenZip.main(args);
@@ -92,6 +93,7 @@ public class BuildVpdmfMysqlMavenZipTest {
 				ftdSpecFile.getParent(),
 				peopleSpecFile.getParent(),
 				"target",
+				"1.1.3-SNAPSHOT"
 				};
 		
 		BuildVpdmfMysqlMavenZip.main(args);
@@ -107,6 +109,7 @@ public class BuildVpdmfMysqlMavenZipTest {
 				ftdSpecFile.getParent(),
 				peopleSpecFile.getParent(),
 				"target",
+				"1.1.3-SNAPSHOT"
 				};
 		
 		BuildVpdmfMysqlMavenZip.main(args);
