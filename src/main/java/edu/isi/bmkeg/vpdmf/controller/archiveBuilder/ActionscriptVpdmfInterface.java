@@ -45,7 +45,7 @@ public class ActionscriptVpdmfInterface {
 	
 	public void buildServiceMavenProject(File srcZipFile, File swcFile, 
 			String group, String artifactId, String version,
-			String repoId, String repoUrl) throws Exception {
+			String bmkegParentVersion) throws Exception {
 				
 		if( group == null || group.length() == 0 ) {
 			group = "bmkeg.isi.edu";
@@ -90,21 +90,7 @@ public class ActionscriptVpdmfInterface {
 				+ toInsert + 
 				pomCode.substring(insertLoc+lu.length()+2, pomCode.length());
 		
-		String distribMgmt = "";
-		if( version.endsWith("-SNAPSHOT") ) {
-			distribMgmt += "		<snapshotRepository>\n";
-			distribMgmt += "			<id>" + repoId + "</id>\n";
-			distribMgmt += "			<name>SNAPSHOT repository</name>\n";
-			distribMgmt += "			<url>" + repoUrl + "</url>\n";
-			distribMgmt += "		</snapshotRepository>\n";
-		} else {
-			distribMgmt += "		<repository>\n";
-			distribMgmt += "			<id>" + repoId + "</id>\n";
-			distribMgmt += "			<name>Repository</name>\n";
-			distribMgmt += "			<url>" + repoUrl + "</url>\n";
-			distribMgmt += "		</repository>\n";
-		}
-		pomCode = pomCode.replaceAll("\\[DISTRIBUTION_MANAGMENT\\]", distribMgmt);
+		pomCode = pomCode.replaceAll("\\[PARENT-VERSION\\]", bmkegParentVersion);
 		
 		FileUtils.writeStringToFile(pomFile, pomCode);
 		

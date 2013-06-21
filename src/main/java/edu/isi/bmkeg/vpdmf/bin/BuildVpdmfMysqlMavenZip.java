@@ -18,7 +18,7 @@ import edu.isi.bmkeg.vpdmf.utils.VPDMfParser;
 
 public class BuildVpdmfMysqlMavenZip {
 
-	public static String USAGE = "arguments: [<proj1> <proj2> ... <projN>] <target-dir>"; 
+	public static String USAGE = "arguments: [<proj1> <proj2> ... <projN>] <target-dir>  <bmkeg-parent-version>"; 
 
 	private VPDMf top;
 	
@@ -27,7 +27,7 @@ public class BuildVpdmfMysqlMavenZip {
 	 */
 	public static void main(String[] args) throws Exception {
 
-		if( args.length < 2) {
+		if( args.length < 3) {
 			System.err.println(USAGE);
 			System.exit(-1);
 		}
@@ -46,31 +46,16 @@ public class BuildVpdmfMysqlMavenZip {
 		VpdmfSpec firstSpecs = VPDMfGeneratorConverters.readVpdmfSpecFromPom(firstPomModel);
 		
 		List<File> pomFiles = new ArrayList<File>();
-		for (int i=0; i<args.length-1; i++) {
+		for (int i=0; i<args.length-2; i++) {
 			File pomFile = new File(args[i].replaceAll("\\/$", "") + "/pom.xml");	
 			pomFiles.add(pomFile);
 		}
 		
-		File zip = new File(args[args.length-1].replaceAll("\\/$", "") + "/" 
+		File zip = new File(args[args.length-2].replaceAll("\\/$", "") + "/" 
 				+ firstSpecs.getArtifactId() + "-mysql-" + firstSpecs.getVersion() 
 				+ ".zip" );
 		
-		DistributionManagement dm = VPDMfGeneratorConverters.
-				readDistributionManagementFromPom( firstPomModel, firstPom);
-		
-		if(dm == null) {
-			throw new Exception("Can't find distribution management information");
-		}
-		
-		String repoId = "";
-		String repoUrl = "";
-		if( firstSpecs.getVersion().endsWith("SNAPSHOT") ) {
-			repoId = dm.getSnapshotRepository().getId();	
-			repoUrl = dm.getSnapshotRepository().getUrl();
-		} else {
-			repoId = dm.getRepository().getId();	
-			repoUrl = dm.getRepository().getUrl();	
-		}
+		String bmkegParentVersion = args[args.length-1];
 		
 		Iterator<File> it = pomFiles.iterator();
 		while( it.hasNext() ) {
@@ -151,7 +136,7 @@ public class BuildVpdmfMysqlMavenZip {
 		}
 		
 		VPDMfArchiveFileBuilder vafb = new VPDMfArchiveFileBuilder();
-		vafb.buildArchiveFile(firstSpecs, top, dataFiles, zip, repoId, repoUrl);
+		vafb.buildArchiveFile(firstSpecs, top, dataFiles, zip, bmkegParentVersion);
 
 		System.out.println("MySQL VPDMf archive generated: " + zip.getPath());
 		
