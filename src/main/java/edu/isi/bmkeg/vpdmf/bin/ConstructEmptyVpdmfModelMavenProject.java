@@ -21,7 +21,7 @@ import edu.isi.bmkeg.vpdmf.utils.VPDMfParser;
 
 public class ConstructEmptyVpdmfModelMavenProject {
 
-	public static String USAGE = "arguments: <dir> <repoId> <repoUrl>"; 
+	public static String USAGE = "arguments: <dir> <bmkeg-parent-version>"; 
 	
 	/**
 	 * @param args
@@ -29,7 +29,7 @@ public class ConstructEmptyVpdmfModelMavenProject {
 	 */
 	public static void main(String[] args) throws Exception {
 
-		if( args.length != 3 ) {
+		if( args.length != 2 ) {
 			System.err.println(USAGE);
 			System.exit(-1);
 		}
@@ -37,8 +37,7 @@ public class ConstructEmptyVpdmfModelMavenProject {
 		File dir = new File(args[0]);
 		dir.mkdirs();
 		
-		String repoId = args[1];
-		String repoUrl = args[2];
+		String bmkegParentVersion = args[1];
 
 		VPDMfParser vpdmfP = new VPDMfParser();
 		VPDMf top = vpdmfP.buildVpdmfSystemViews();
@@ -62,7 +61,7 @@ public class ConstructEmptyVpdmfModelMavenProject {
 
 		java.buildJpaMavenProject(zip, null, 
 				group, artifactId + "-jpa", version, 
-				repoId, repoUrl);
+				bmkegParentVersion);
 
 		File buildDir = new File(dAddr + "/jpaModel");
 		Converters.unzipIt(zip, buildDir);
@@ -86,7 +85,7 @@ public class ConstructEmptyVpdmfModelMavenProject {
 		zip = new File(dAddr + "/temp2.zip");
 		as.buildFlexMojoMavenProject(zip, null, group, 
 				artifactId + "-as", version,
-				repoId, repoUrl);
+				bmkegParentVersion);
 		
 		Converters.unzipIt(zip, tempDir);
 		

@@ -26,7 +26,7 @@ import edu.isi.bmkeg.vpdmf.utils.VPDMfParser;
 
 public class BuildVpdmfModelMavenProject {
 
-	public static String USAGE = "arguments: [<proj1> <proj2> ... <projN>] <target-dir>"; 
+	public static String USAGE = "arguments: [<proj1> <proj2> ... <projN>] <target-dir> <bmkeg-parent-version>"; 
 	
 	/**
 	 * @param args
@@ -34,7 +34,7 @@ public class BuildVpdmfModelMavenProject {
 	 */
 	public static void main(String[] args) throws Exception {
 
-		if( args.length < 2 ) {
+		if( args.length < 3 ) {
 			System.err.println(USAGE);
 			System.exit(-1);
 		}
@@ -50,32 +50,17 @@ public class BuildVpdmfModelMavenProject {
 
 		List<File> pomFiles = new ArrayList<File>();
 		List<String> pomPaths = new ArrayList<String>();
-		for (int i = 0; i < args.length - 1; i++) {
+		for (int i = 0; i < args.length - 2; i++) {
 			pomPaths.add(args[i]);
 			File specsFile = new File(args[i]);
 			pomFiles.add(specsFile);
 		}
 
-		File dir = new File(args[args.length - 1]);
+		File dir = new File(args[args.length - 2]);
 		dir.mkdirs();
-		
-		DistributionManagement dm = VPDMfGeneratorConverters.
-				readDistributionManagementFromPom( firstPomModel, firstPom);
-		
-		if(dm == null) {
-			throw new Exception("Can't find distribution management information");
-		}
-		
-		String repoId = "";
-		String repoUrl = "";
-		if( firstSpecs.getVersion().endsWith("SNAPSHOT") ) {
-			repoId = dm.getSnapshotRepository().getId();	
-			repoUrl = dm.getSnapshotRepository().getUrl();
-		} else {
-			repoId = dm.getRepository().getId();	
-			repoUrl = dm.getRepository().getUrl();	
-		}
 
+		String bmkegParentVersion = args[args.length - 1];
+		
 		Iterator<File> it = pomFiles.iterator();
 		while (it.hasNext()) {
 			File pomFile = it.next();
@@ -156,7 +141,7 @@ public class BuildVpdmfModelMavenProject {
 
 		java.buildJpaMavenProject(zip, null, 
 				group, artifactId + "-jpa", version, 
-				repoId, repoUrl);
+				bmkegParentVersion);
 
 		File buildDir = new File(dAddr + "/jpaModel");
 		Converters.unzipIt(zip, buildDir);
@@ -180,7 +165,7 @@ public class BuildVpdmfModelMavenProject {
 		zip = new File(dAddr + "/temp2.zip");
 		as.buildFlexMojoMavenProject(zip, null, group, 
 				artifactId + "-as", version,
-				repoId, repoUrl);
+				bmkegParentVersion);
 		
 		Converters.unzipIt(zip, tempDir);
 		

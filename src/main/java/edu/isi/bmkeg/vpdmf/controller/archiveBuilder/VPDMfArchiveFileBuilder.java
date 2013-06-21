@@ -77,7 +77,7 @@ public class VPDMfArchiveFileBuilder extends UMLArchiveFileBuilder {
 	 */
 	public void buildArchiveFile(VpdmfSpec vpdmfSpec, VPDMf top, 
 			List<File> dataDirsOrFiles, File varFile,
-			String repoId, String repoUrl) throws Exception {
+			String bmkegParentVersion) throws Exception {
 
 		String groupId = top.getGroupId();
 		String artifactId = top.getArtifactId();
@@ -252,7 +252,7 @@ public class VPDMfArchiveFileBuilder extends UMLArchiveFileBuilder {
 		
 		java.setUmlModel(m);
 		
-		java.buildJpaMavenProject(srcJar, jar, groupId, artifactId + "-jpa", version, repoId, repoUrl);
+		java.buildJpaMavenProject(srcJar, jar, groupId, artifactId + "-jpa", version, bmkegParentVersion);
 		
 		filesInZip.put(srcJar.getName(), srcJar);
 		srcJar.deleteOnExit();

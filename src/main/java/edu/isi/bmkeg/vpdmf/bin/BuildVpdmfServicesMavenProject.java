@@ -30,14 +30,14 @@ public class BuildVpdmfServicesMavenProject {
 	Logger log = Logger
 			.getLogger("edu.isi.bmkeg.vpdmf.bin.ConstructVpdmfServicesMavenProject");
 
-	public static String USAGE = "arguments: [<spec1> <spec2> ... <specN>] <directory>\n";
+	public static String USAGE = "arguments: [<spec1> <spec2> ... <specN>] <directory> <bmkeg-parent-version>\n";
 	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
 
-		if( args.length < 2 ) {
+		if( args.length < 3 ) {
 			System.err.println(USAGE);
 			System.exit(-1);
 		}
@@ -52,31 +52,16 @@ public class BuildVpdmfServicesMavenProject {
 		VpdmfSpec firstSpecs = VPDMfGeneratorConverters.readVpdmfSpecFromPom(firstPomModel);
 
 		List<File> specsFiles = new ArrayList<File>();
-		for (int i = 0; i < args.length - 3; i++) {
+		for (int i = 0; i < args.length - 2; i++) {
 			File specsFile = new File(args[i]);
 			specsFiles.add(specsFile);
 		}
 
-		File dir = new File(args[args.length - 1]);
+		File dir = new File(args[args.length - 2]);
 		dir.mkdirs();
-		
-		DistributionManagement dm = VPDMfGeneratorConverters.
-				readDistributionManagementFromPom( firstPomModel, firstPom);
-		
-		if(dm == null) {
-			throw new Exception("Can't find distribution management information");
-		}
-		
-		String repoId = "";
-		String repoUrl = "";
-		if( firstSpecs.getVersion().endsWith("SNAPSHOT") ) {
-			repoId = dm.getSnapshotRepository().getId();	
-			repoUrl = dm.getSnapshotRepository().getUrl();
-		} else {
-			repoId = dm.getRepository().getId();	
-			repoUrl = dm.getRepository().getUrl();	
-		}
-		
+
+		String bmkegParentVersion = args[args.length - 1];
+				
 		Iterator<File> it = specsFiles.iterator();
 		while (it.hasNext()) {
 			File pomFile = it.next();
@@ -148,7 +133,7 @@ public class BuildVpdmfServicesMavenProject {
 		String dAddr = dir.getAbsolutePath();
 		File srcJar = new File(dAddr + "/" + artifactId +"-services-src.jar");
 		
-		java.buildServiceMavenProject(srcJar, null, group, artifactId, version, repoId, repoUrl);
+		java.buildServiceMavenProject(srcJar, null, group, artifactId, version, bmkegParentVersion);
 
 		File srcDir = new File(dAddr + "/" + artifactId +"-services");
 		srcDir.mkdirs();
@@ -163,7 +148,7 @@ public class BuildVpdmfServicesMavenProject {
 
 		File zip = new File(dAddr + "/" + artifactId +"-as-services-src.zip");
 
-		as.buildServiceMavenProject(zip, null, group, artifactId, version, repoId, repoUrl);
+		as.buildServiceMavenProject(zip, null, group, artifactId, version, bmkegParentVersion);
 
 		File zipDir = new File(dAddr + "/" + artifactId +"-as-services");
 		zipDir.mkdirs();
