@@ -28,7 +28,8 @@ public class BuildVpdmfModelMavenProjectTest {
 
 	String login, password, dbUrl;
 	File spec;
-	
+	File ftdSpecFile, peopleSpecFile, digLibSpecFile, triageSpecFile;
+
 	@Before
 	public void setUp() throws Exception {
 		
@@ -43,8 +44,19 @@ public class BuildVpdmfModelMavenProjectTest {
 		if (l != -1)
 			dbUrl = dbUrl.substring(l + 1, dbUrl.length());
 	
-		spec = ctx.getResource(
-				"classpath:edu/isi/bmkeg/vpdmf/ooevv/ooevv_vpdmf.xml").getFile();
+//		spec = ctx.getResource(
+//				"classpath:edu/isi/bmkeg/vpdmf/ooevv/ooevv_vpdmf.xml").getFile();
+		ftdSpecFile = ctx.getResource(
+				"classpath:edu/isi/bmkeg/vpdmf/ftd/ftd_vpdmfSpec.xml").getFile();
+
+		digLibSpecFile = ctx.getResource(
+				"classpath:edu/isi/bmkeg/vpdmf/digitalLibrary/digitalLibrary_vpdmfSpec.xml").getFile();
+
+		peopleSpecFile = ctx.getResource(
+				"classpath:edu/isi/bmkeg/vpdmf/people/people_vpdmfSpec.xml").getFile();
+
+		triageSpecFile = ctx.getResource(
+				"classpath:edu/isi/bmkeg/vpdmf/triage/triage_vpdmfSpec.xml").getFile();
 		
 	}
 
@@ -53,11 +65,16 @@ public class BuildVpdmfModelMavenProjectTest {
 		
 	}
 	
-	@Test @Ignore("Fails")
+	@Test
 	public final void testRunExecWithFullPaths() throws Exception {
 				
 		String[] args = new String[] { 
-				spec.getPath(), "target",
+				triageSpecFile.getParent(),
+				digLibSpecFile.getParent(),
+				ftdSpecFile.getParent(),
+				peopleSpecFile.getParent(),
+				"target",
+				"1.1.3-SNAPSHOT"
 				};
 		
 		BuildVpdmfModelMavenProject.main(args);
