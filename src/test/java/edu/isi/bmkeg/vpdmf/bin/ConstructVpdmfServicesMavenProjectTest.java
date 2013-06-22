@@ -60,16 +60,15 @@ public class ConstructVpdmfServicesMavenProjectTest {
 		
 	}
 	
-	@Test @Ignore("Breaks because the generated maven artifacts depend on the same VPDMf artifact that is being build. We need to fix this")
+	@Test 
 	public final void testRunDigitalLibraryBuild() throws Exception {
-				
+			
 		String[] args = new String[] { 
-				 digLib.getPath(), ftd.getPath(), people.getPath(), 
-				 dir.getPath(), 
-				 "hugin", "http://hugin.isi.edu:8180/nexus/content/repositories/BMKEG-SNAPSHOT/"
-				};
+				 digLib.getParent(), ftd.getParent(), people.getParent(), 
+				 "target", 
+				 "1.1.3-SNAPSHOT"
+				 };
 		
-		// Don't run these as part of the ongoing tests. Check this functionality specifically.
 		BuildVpdmfServicesMavenProject.main(args);
 				
 	}

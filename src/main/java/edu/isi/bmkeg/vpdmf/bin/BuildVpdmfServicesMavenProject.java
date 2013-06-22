@@ -51,10 +51,10 @@ public class BuildVpdmfServicesMavenProject {
 		Model firstPomModel = VPDMfGeneratorConverters.readModelFromPom(firstPom);
 		VpdmfSpec firstSpecs = VPDMfGeneratorConverters.readVpdmfSpecFromPom(firstPomModel);
 
-		List<File> specsFiles = new ArrayList<File>();
+		List<File> pomFiles = new ArrayList<File>();
 		for (int i = 0; i < args.length - 2; i++) {
-			File specsFile = new File(args[i]);
-			specsFiles.add(specsFile);
+			File pomFile = new File(args[i].replaceAll("\\/$", "") + "/pom.xml");	
+			pomFiles.add(pomFile);
 		}
 
 		File dir = new File(args[args.length - 2]);
@@ -62,7 +62,7 @@ public class BuildVpdmfServicesMavenProject {
 
 		String bmkegParentVersion = args[args.length - 1];
 				
-		Iterator<File> it = specsFiles.iterator();
+		Iterator<File> it = pomFiles.iterator();
 		while (it.hasNext()) {
 			File pomFile = it.next();
 
@@ -89,7 +89,7 @@ public class BuildVpdmfServicesMavenProject {
 			File data = null;
 			if (vpdmfSpec.getData() != null) {
 				String dataPath = vpdmfSpec.getData().getPath();
-				data = new File(dataPath);
+				data = new File(pomFile.getParent() + "/" + dataPath);
 				if (!data.exists())
 					data = null;
 				else
