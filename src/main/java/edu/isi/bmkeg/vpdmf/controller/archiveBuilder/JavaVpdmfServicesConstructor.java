@@ -108,11 +108,6 @@ public class JavaVpdmfServicesConstructor {
 		pom += "		<plugins>\n";
 		pom += "			<plugin>\n";
 		pom += "				<groupId>org.apache.maven.plugins</groupId>\n";
-		pom += "		    	<artifactId>maven-surefire-plugin</artifactId>\n";
-		pom += "			    <version>2.12</version>\n";
-		pom += "			</plugin>\n";
-		pom += "			<plugin>\n";
-		pom += "				<groupId>org.apache.maven.plugins</groupId>\n";
 		pom += "				<artifactId>maven-source-plugin</artifactId>\n";
 		pom += "				<version>2.1.2</version>\n";
 		pom += "				<executions>\n";
@@ -135,7 +130,6 @@ public class JavaVpdmfServicesConstructor {
 		pom += "		<dependency>\n";
 		pom += "			<groupId>edu.isi.bmkeg</groupId>\n";
 		pom += "			<artifactId>vpdmf</artifactId>\n";
-		pom += "			<version>[1.1.2-SNAPSHOT,]</version>\n";
 		pom += "            <scope>provided</scope>\n";
 		pom += "		</dependency>\n";
 		pom += "	</dependencies>\n";
