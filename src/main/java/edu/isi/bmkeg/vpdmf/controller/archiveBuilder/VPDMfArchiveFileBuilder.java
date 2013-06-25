@@ -229,7 +229,7 @@ public class VPDMfArchiveFileBuilder extends UMLArchiveFileBuilder {
 		
 		}
 		
-				// Build JPA classes for the domain to act as intermediaries for the
+		// Build JPA classes for the domain to act as intermediaries for the
 		// model
 		// if you need to instantiate java object graphs for the views. Or if
 		// you'd prefer to write your own functions against the underlying

@@ -73,7 +73,7 @@ public class BuildVpdmfMysqlMavenZipTest {
 	}
 
 	@Test
-	public final void testBuildFtpArchive() throws Exception {
+	public final void testBuildFtdArchive() throws Exception {
 				
 		String[] args = new String[] { 
 				ftdSpecFile.getParent(),
