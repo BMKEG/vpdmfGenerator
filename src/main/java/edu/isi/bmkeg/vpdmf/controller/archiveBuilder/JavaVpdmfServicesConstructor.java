@@ -129,7 +129,7 @@ public class JavaVpdmfServicesConstructor {
 		pom += "		</dependency>\n";
 		pom += "		<dependency>\n";
 		pom += "			<groupId>edu.isi.bmkeg</groupId>\n";
-		pom += "			<artifactId>vpdmf</artifactId>\n";
+		pom += "			<artifactId>vpdmfCore</artifactId>\n";
 		pom += "            <scope>provided</scope>\n";
 		pom += "		</dependency>\n";
 		pom += "	</dependencies>\n";
