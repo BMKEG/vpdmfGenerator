@@ -139,11 +139,11 @@ public class ActionscriptVpdmfInterface {
 				
 				if( vd.getType() != ViewDefinition.LOOKUP ) {
 				
-					f = this.prepareCode(".rl.events", "Delete" + vd.getName() + "Event");
+					f = this.prepareCode(".rl.events", "Delete" + vd.getName() + "ByIdEvent");
 					code = this.generateDeleteEventCode(pp, vd);
 					FileUtils.writeStringToFile(f, code);
 	
-					f = this.prepareCode(".rl.events", "Delete" + vd.getName() + "ResultEvent");
+					f = this.prepareCode(".rl.events", "Delete" + vd.getName() + "ByIdResultEvent");
 					code = this.generateDeleteResultEventCode(pp, vd);
 					FileUtils.writeStringToFile(f, code);
 	
@@ -360,14 +360,14 @@ public class ActionscriptVpdmfInterface {
 					+ c.getBaseName() + "):void;\n\n";
 		}
 
-		code += "		// ~~~~~~~~~~~~~~~~\n";
-		code += "		// Delete functions\n";
-		code += "		// ~~~~~~~~~~~~~~~~\n\n";
+		code += "		// ~~~~~~~~~~~~~~~~~~~~\n";
+		code += "		// DeleteById functions\n";
+		code += "		// ~~~~~~~~~~~~~~~~~~~~\n\n";
 		for( ViewDefinition key: cList.keySet()) {
 			if( key.getType() == ViewDefinition.LOOKUP )
 				continue;
 			code += "		function delete" + key.getName()
-					+ "(id:Number):void;\n\n";
+					+ "ById(id:Number):void;\n\n";
 		}
 
 		code += "		// ~~~~~~~~~~~~~~~~~~\n";
@@ -551,19 +551,19 @@ public class ActionscriptVpdmfInterface {
 			code += "		}\n\n";
 		}
 
-		code += "		// ~~~~~~~~~~~~~~~~\n";
-		code += "		// Delete functions\n";
-		code += "		// ~~~~~~~~~~~~~~~~\n\n";
+		code += "		// ~~~~~~~~~~~~~~~~~~~~\n";
+		code += "		// DeleteById functions\n";
+		code += "		// ~~~~~~~~~~~~~~~~~~~~\n\n";
 		for( ViewDefinition key: cList.keySet()) {
 			if( key.getType() == ViewDefinition.LOOKUP )
 				continue;
 			code += "		public function delete" + key.getName() 
-					+ "(id:Number):void {\n";
-			code += "			server.delete" + key.getName() + ".cancel();\n";
+					+ "ById(id:Number):void {\n";
+			code += "			server.delete" + key.getName() + "ById.cancel();\n";
 			code += "			server.delete" + key.getName() 
-					+ ".addEventListener(ResultEvent.RESULT, delete" 
-					+ key.getName() + "ResultHandler);\n";
-			code += "			server.delete" + key.getName() + ".send(id);\n";
+					+ "ById.addEventListener(ResultEvent.RESULT, delete" 
+					+ key.getName() + "ByIdResultHandler);\n";
+			code += "			server.delete" + key.getName() + "ById.send(id);\n";
 			code += "		}\n\n";		
 		}
 
@@ -679,16 +679,17 @@ public class ActionscriptVpdmfInterface {
 			code += "	}\n\n";
 		}
 
-		code += "		// ~~~~~~~~~~~~~~~~~~~~~\n";
-		code += "		// Delete result handler\n";
-		code += "		// ~~~~~~~~~~~~~~~~~~~~~\n\n";
+		code += "		// ~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+		code += "		// DeleteById result handler\n";
+		code += "		// ~~~~~~~~~~~~~~~~~~~~~~~~~\n\n";
 		for( ViewDefinition key: cList.keySet()) {
 			if( key.getType() == ViewDefinition.LOOKUP )
 				continue;
 			code += "		private function delete" + key.getName() 
-					+ "ResultHandler(event:ResultEvent):void\n";
+					+ "ByIdResultHandler(event:ResultEvent):void\n";
 			code += "		{\n";			
-			code += "			dispatch(new Delete" + key.getName() + "ResultEvent());\n";
+			code += "			var result:Boolean = event.result;\n";
+			code += "			dispatch(new Delete" + key.getName() + "ByIdResultEvent(result));\n";
 			code += "		}\n\n";
 		}
 
@@ -762,23 +763,23 @@ public class ActionscriptVpdmfInterface {
 		code += "	import flash.events.Event;\n";
 		code += "	import " + c.readClassAddress() + ";\n\n";
 		
-		code += "	public class Delete" + vd.getName() + "Event extends Event\n";
+		code += "	public class Delete" + vd.getName() + "ByIdEvent extends Event\n";
 		code += "		{\n\n";
 	
-		code += "		public static const DELETE_" + vd.getName().toUpperCase() + ":String = \"delete"
-				+ vd.getName() + "\";\n\n"; 
+		code += "		public static const DELETE_" + vd.getName().toUpperCase() + "_BY_ID:String = \"delete"
+				+ vd.getName() + "ById\";\n\n"; 
 
-		code += "		public var object:" + c.getBaseName() + ";\n\n"; 
+		code += "		public var id:Number;\n\n"; 
 
-		code += "		public function Delete" + vd.getName() + "Event(object:" + c.getBaseName() + ")\n";
+		code += "		public function Delete" + vd.getName() + "ByIdEvent(id:Number)\n";
 		code += "		{\n";
-		code += "			super(DELETE_" + vd.getName().toUpperCase() + ");\n";
-		code += "			this.object = object;\n";
+		code += "			super(DELETE_" + vd.getName().toUpperCase() + "_BY_ID);\n";
+		code += "			this.id = id;\n";
 		code += "		}\n\n";
 		
 		code += "		override public function clone() : Event\n";
 		code += "		{\n";
-		code += "			return new Delete" + vd.getName() + "Event(object);\n";
+		code += "			return new Delete" + vd.getName() + "ByIdEvent(id);\n";
 		code += "		}\n\n";
 		
 		code += "	}\n";
@@ -803,21 +804,24 @@ public class ActionscriptVpdmfInterface {
 		code += "	import flash.events.Event;\n";
 		code += "	import " + c.readClassAddress() + ";\n\n";
 		
-		code += "	public class Delete" + vd.getName() + "ResultEvent extends Event\n";
+		code += "	public class Delete" + vd.getName() + "ByIdResultEvent extends Event\n";
 		code += "		{\n\n";
-	
+		
 		code += "		public static const DELETE_" + vd.getName().toUpperCase() 
-				+ ":String = \"delete"
-				+ vd.getName() + "\";\n\n"; 
+				+ "_BY_ID_RESULT:String = \"delete"
+				+ vd.getName() + "ByIdResult\";\n\n"; 
 
-		code += "		public function Delete" + vd.getName() + "ResultEvent()\n";
+		code += "		public var result:Boolean;\n\n"; 
+		
+		code += "		public function Delete" + vd.getName() + "ByIdResultEvent(result:Boolean)\n";
 		code += "		{\n";
-		code += "			super(DELETE_" + vd.getName().toUpperCase() + ");\n";
+		code += "			super(DELETE_" + vd.getName().toUpperCase() + "_BY_ID_RESULT);\n";
+		code += "			this.result = result;\n";
 		code += "		}\n\n";
 		
 		code += "		override public function clone() : Event\n";
 		code += "		{\n";
-		code += "			return new Delete" + vd.getName() + "ResultEvent();\n";
+		code += "			return new Delete" + vd.getName() + "ByIdResultEvent(result);\n";
 		code += "		}\n\n";
 		
 		code += "	}\n";
@@ -1584,13 +1588,13 @@ public class ActionscriptVpdmfInterface {
 			code += "		function get update" + key.getName() + "():AbstractOperation;\n\n";
 		}
 
-		code += "		// ~~~~~~~~~~~~~~~~\n";
-		code += "		// Delete functions\n";
-		code += "		// ~~~~~~~~~~~~~~~~\n\n";
+		code += "		// ~~~~~~~~~~~~~~~~~~~~\n";
+		code += "		// DeleteById functions\n";
+		code += "		// ~~~~~~~~~~~~~~~~~~~~\n\n";
 		for( ViewDefinition key: cList.keySet()) {
 			if( key.getType() == ViewDefinition.LOOKUP )
 				continue;
-			code += "		function get delete" + key.getName() + "():AbstractOperation;\n\n";
+			code += "		function get delete" + key.getName() + "ById():AbstractOperation;\n\n";
 		}
 
 		code += "		// ~~~~~~~~~~~~~~~~~~\n";
@@ -1713,15 +1717,15 @@ public class ActionscriptVpdmfInterface {
 			code += "		}\n\n";
 		}
 
-		code += "		// ~~~~~~~~~~~~~~~~\n";
-		code += "		// Delete functions\n";
-		code += "		// ~~~~~~~~~~~~~~~~\n\n";
+		code += "		// ~~~~~~~~~~~~~~~~~~~~\n";
+		code += "		// DeleteById functions\n";
+		code += "		// ~~~~~~~~~~~~~~~~~~~~\n\n";
 		for( ViewDefinition key: cList.keySet()) {
 			if( key.getType() == ViewDefinition.LOOKUP )
 				continue;
-			code += "		public function get delete" + key.getName() + "():AbstractOperation\n";
+			code += "		public function get delete" + key.getName() + "ById():AbstractOperation\n";
 			code += "		{\n";
-			code += "			return getOperation(\"delete" + key.getName() + "\");\n";
+			code += "			return getOperation(\"delete" + key.getName() + "ById\");\n";
 			code += "		}\n\n";
 		}
 

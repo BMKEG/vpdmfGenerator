@@ -304,17 +304,6 @@ public class JavaVpdmfServicesConstructor {
 					+ c.getBaseName() + " " + s + ") throws Exception;\n\n";
 		}
 
-		code += "	// ~~~~~~~~~~~~~~~~\n";
-		code += "	// Delete functions\n";
-		code += "	// ~~~~~~~~~~~~~~~~\n\n";
-		for( ViewDefinition key: cList.keySet()) {
-			if( key.getType() == ViewDefinition.LOOKUP )
-				continue;
-			UMLclass c = cList.get(key);
-			code += "	public void delete" + key.getName() 
-					+ "(long id) throws Exception;\n\n";
-		}
-
 		code += "	// ~~~~~~~~~~~~~~~~~~\n";
 		code += "	// FindById functions\n";
 		code += "	// ~~~~~~~~~~~~~~~~~~\n\n";
@@ -324,6 +313,17 @@ public class JavaVpdmfServicesConstructor {
 					+ "ById(long id) throws Exception;\n\n";			
 		}		
 
+		code += "	// ~~~~~~~~~~~~~~~~~~\n";
+		code += "	// DeleteById functions\n";
+		code += "	// ~~~~~~~~~~~~~~~~~~\n\n";
+		for( ViewDefinition key: cList.keySet()) {
+			if( key.getType() == ViewDefinition.LOOKUP )
+				continue;
+			UMLclass c = cList.get(key);
+			code += "	public boolean delete" + key.getName() 
+					+ "ById(long id) throws Exception;\n\n";			
+		}		
+		
 		code += "	// ~~~~~~~~~~~~~~~~~~\n";
 		code += "	// Retrieve functions\n";
 		code += "	// ~~~~~~~~~~~~~~~~~~\n\n";
@@ -458,19 +458,6 @@ public class JavaVpdmfServicesConstructor {
 			code += "	}\n\n";
 		}
 
-		code += "	// ~~~~~~~~~~~~~~~~\n";
-		code += "	// Delete functions\n";
-		code += "	// ~~~~~~~~~~~~~~~~\n\n";
-		for( ViewDefinition key: cList.keySet()) {
-			if( key.getType() == ViewDefinition.LOOKUP )
-				continue;
-			UMLclass c = cList.get(key);
-			code += "	public void delete" + key.getName() 
-					+ "(long id) throws Exception {\n";
-			code += "		" + daoName + ".delete" + key.getName() + "(id);\n";
-			code += "	}\n\n";			
-		}
-
 		code += "	// ~~~~~~~~~~~~~~~~~~\n";
 		code += "	// FindById functions\n";
 		code += "	// ~~~~~~~~~~~~~~~~~~\n\n";
@@ -481,6 +468,19 @@ public class JavaVpdmfServicesConstructor {
 			code += "		return " + daoName + ".find" + key.getName() + "ById(id);\n";
 			code += "	}\n\n";			
 		}		
+		
+		code += "	// ~~~~~~~~~~~~~~~~~~\n";
+		code += "	// DeleteById functions\n";
+		code += "	// ~~~~~~~~~~~~~~~~~~\n\n";
+		for( ViewDefinition key: cList.keySet()) {
+			if( key.getType() == ViewDefinition.LOOKUP )
+				continue;
+			UMLclass c = cList.get(key);
+			code += "	public boolean delete" + key.getName() 
+					+ "ById(long id) throws Exception {\n";			
+			code += "		return " + daoName + ".delete" + key.getName() + "ById(id);\n";
+			code += "	}\n\n";			
+		}	
 
 		code += "	// ~~~~~~~~~~~~~~~~~~\n";
 		code += "	// Retrieve functions\n";
@@ -613,17 +613,6 @@ public class JavaVpdmfServicesConstructor {
 					+ c.getBaseName() + " " + s + ") throws Exception;\n\n";
 		}
 
-		code += "	// ~~~~~~~~~~~~~~~~\n";
-		code += "	// Delete functions\n";
-		code += "	// ~~~~~~~~~~~~~~~~\n\n";
-		for( ViewDefinition key: cList.keySet()) {
-			if( key.getType() == ViewDefinition.LOOKUP )
-				continue;
-			UMLclass c = cList.get(key);
-			code += "	public void delete" + key.getName() 
-					+ "(long id) throws Exception;\n\n";
-		}
-
 		code += "	// ~~~~~~~~~~~~~~~~~~\n";
 		code += "	// FindById functions\n";
 		code += "	// ~~~~~~~~~~~~~~~~~~\n\n";
@@ -633,6 +622,17 @@ public class JavaVpdmfServicesConstructor {
 					+ "ById(long id) throws Exception;\n\n";			
 		}		
 
+		code += "	// ~~~~~~~~~~~~~~~~~~\n";
+		code += "	// DeleteById functions\n";
+		code += "	// ~~~~~~~~~~~~~~~~~~\n\n";
+		for( ViewDefinition key: cList.keySet()) {
+			if( key.getType() == ViewDefinition.LOOKUP )
+				continue;
+			UMLclass c = cList.get(key);
+			code += "	public boolean delete" + key.getName() 
+					+ "ById(long id) throws Exception;\n\n";			
+		}		
+		
 		code += "	// ~~~~~~~~~~~~~~~~~~\n";
 		code += "	// Retrieve functions\n";
 		code += "	// ~~~~~~~~~~~~~~~~~~\n\n";
@@ -797,24 +797,18 @@ public class JavaVpdmfServicesConstructor {
 			code += "	}\n\n";
 		}
 
-		code += "	// ~~~~~~~~~~~~~~~~\n";
-		code += "	// Delete functions\n";
-		code += "	// ~~~~~~~~~~~~~~~~\n\n";
+		code += "	// ~~~~~~~~~~~~~~~~~~~~\n";
+		code += "	// DeleteById functions\n";
+		code += "	// ~~~~~~~~~~~~~~~~~~~~\n\n";
 		for( ViewDefinition key: cList.keySet()) {
 			if( key.getType() == ViewDefinition.LOOKUP )
 				continue;
 			UMLclass c = cList.get(key);
-			code += "	public void delete" + key.getName() 
-					+ "(long id) throws Exception {\n\n";
-			code += "		try {\n";
-			code += "			getCe().connectToDB();\n";
-			code += "			getCe().turnOffAutoCommit();\n";
-			code += "			getCe().deleteView(\"" + key.getName() +"\", id );\n";
-			code += "		} catch (Exception e) {\n";
-			code += "			throw e;\n";
-			code += "		} finally {\n";
-			code += "			getCe().closeDbConnection();\n";
-			code += "		}\n\n";
+			code += "	public boolean delete" + key.getName() 
+					+ "ById(long id) throws Exception {\n\n";		
+			
+			code += "		return this.getCoreDao()"+
+					".deleteById(id, \"" + key.getName() + "\");\n\n";			
 			code += "	}\n\n";			
 		}
 
