@@ -100,8 +100,7 @@ public class ActionscriptVpdmfInterface {
 		this.filesInSrc = new HashMap<String, File>();
 		
 		for( UMLpackage p: this.top.getUmlModel().listPackages().values() ) {
-			if( !p.getBaseName().equals("model") || 
-					p.getParent().getBaseName().equals("vpdmf")) {
+			if( !p.getBaseName().equals("model") ) {
 				continue;
 			}
 			this.pp = p.getParent();
@@ -129,7 +128,8 @@ public class ActionscriptVpdmfInterface {
 			for( ViewDefinition vd: this.top.getViews().values()) {
 				if( vd.getType() != ViewDefinition.DATA &&
 						vd.getType() != ViewDefinition.COLLECTION && 
-						vd.getType() != ViewDefinition.LOOKUP ) 
+						vd.getType() != ViewDefinition.LOOKUP && 
+						vd.getType() != ViewDefinition.SYSTEM ) 
 					continue;
 				
 				UMLclass c = vd.getPrimaryPrimitive().readIdentityClass();
@@ -297,7 +297,8 @@ public class ActionscriptVpdmfInterface {
 		for( ViewDefinition vd: this.top.getViews().values()) {
 			if( vd.getType() != ViewDefinition.DATA && 
 					vd.getType() != ViewDefinition.COLLECTION && 
-					vd.getType() != ViewDefinition.LOOKUP) 
+					vd.getType() != ViewDefinition.LOOKUP && 
+					vd.getType() != ViewDefinition.SYSTEM) 
 				continue;
 			UMLclass c = vd.getPrimaryPrimitive().readIdentityClass();
 			if( c.getPkg().readPackageAddress().contains( addr )) {
@@ -422,7 +423,8 @@ public class ActionscriptVpdmfInterface {
 		for( ViewDefinition vd: this.top.getViews().values()) {
 			if( vd.getType() != ViewDefinition.DATA && 
 					vd.getType() != ViewDefinition.COLLECTION && 
-					vd.getType() != ViewDefinition.LOOKUP) 
+					vd.getType() != ViewDefinition.LOOKUP && 
+					vd.getType() != ViewDefinition.SYSTEM) 
 				continue;
 			UMLclass c = vd.getPrimaryPrimitive().readIdentityClass();
 			if( c.getPkg().readPackageAddress().contains( addr )) {
@@ -1453,7 +1455,7 @@ public class ActionscriptVpdmfInterface {
 		code += "		{\n\n";
 	
 		code += "		public static const LIST_" + vd.getName().toUpperCase() 
-				+ "_PAGED:String = \"list" + vd.getName() + "\";\n\n"; 
+				+ "_PAGED:String = \"list" + vd.getName() + "Paged\";\n\n"; 
 
 		code += "		public var object:" + c.getBaseName() + "_qo;\n\n"; 
 		code += "		public var offset:int;\n\n"; 
@@ -1545,7 +1547,8 @@ public class ActionscriptVpdmfInterface {
 		for( ViewDefinition vd: this.top.getViews().values()) {
 			if( vd.getType() != ViewDefinition.DATA && 
 					vd.getType() != ViewDefinition.COLLECTION && 
-					vd.getType() != ViewDefinition.LOOKUP) 
+					vd.getType() != ViewDefinition.LOOKUP && 
+					vd.getType() != ViewDefinition.SYSTEM) 
 				continue;
 			UMLclass c = vd.getPrimaryPrimitive().readIdentityClass();
 			if( c.getPkg().readPackageAddress().contains( addr )) {
@@ -1642,7 +1645,8 @@ public class ActionscriptVpdmfInterface {
 		for( ViewDefinition vd: this.top.getViews().values()) {
 			if( vd.getType() != ViewDefinition.DATA && 
 					vd.getType() != ViewDefinition.COLLECTION && 
-					vd.getType() != ViewDefinition.LOOKUP) 
+					vd.getType() != ViewDefinition.LOOKUP && 
+					vd.getType() != ViewDefinition.SYSTEM) 
 				continue;
 			UMLclass c = vd.getPrimaryPrimitive().readIdentityClass();
 			if( c.getPkg().readPackageAddress().contains( addr )) {

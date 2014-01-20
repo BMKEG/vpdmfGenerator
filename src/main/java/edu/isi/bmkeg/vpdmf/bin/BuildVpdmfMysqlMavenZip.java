@@ -111,7 +111,21 @@ public class BuildVpdmfMysqlMavenZip {
 			
 			}
 			
-		}			
+		}		
+		
+		//
+		// Hack to permit the vpdmfSystem models to be built in a conventional way.
+		// Do not build MySQL files for the vpdmfSystem model in isolation
+		//
+		if( model.getName().equals("vpdmfSystem") ) {
+			System.out.println("Deferring for VPDMfSystem Build");		
+			UMLmodel newModel = new UMLmodel();
+			newModel.setName("vpdmfSystem");
+			newModel.setSourceType( model.getSourceType() );
+			newModel.setSourceData( model.getSourceData() );
+			model = newModel;
+			viewFiles = new ArrayList<File>();
+		}
 		
 		model.checkForProxy();
 		

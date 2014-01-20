@@ -109,6 +109,21 @@ public class BuildVpdmfModelMavenProject {
 
 		}
 
+		//
+		// Hack to permit the vpdmfSystem models to be built in a conventional way.
+		// If we are building the vpdmfSystem model, then we add system files to 
+		// a new empty UMLmodel 
+		//
+		if( model.getName().equals("vpdmfSystem") ) {
+			System.out.println("Deferring for VPDMfSystem Build");		
+			UMLmodel newModel = new UMLmodel();
+			newModel.setName("vpdmfSystem");
+			newModel.setSourceType( model.getSourceType() );
+			newModel.setSourceData( model.getSourceData() );
+			model = newModel;
+			viewFiles = new ArrayList<File>();
+		}
+		
 		VPDMfParser vpdmfP = new VPDMfParser();
 		VPDMf top = vpdmfP.buildAllViews(firstSpecs, model, viewFiles,
 				solrViews);

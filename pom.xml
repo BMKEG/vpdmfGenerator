@@ -61,13 +61,6 @@
 			<artifactId>vpdmfCore</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>edu.isi.bmkeg</groupId>
-			<artifactId>vpdmfSystem-jpa</artifactId>
-			<version>0.1.1-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-
 		<!-- SOLR LIBRARIES -->
 		<dependency>
 			<groupId>org.apache.solr</groupId>

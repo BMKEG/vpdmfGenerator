@@ -145,10 +145,21 @@ public class JavaVpdmfServicesConstructor {
 		filesInSrcJar.put("pom.xml", pomFile);
 
 		for( UMLpackage p: this.top.getUmlModel().listPackages().values() ) {
-			if( !p.getBaseName().equals("model") || 
-					p.getParent().getBaseName().equals("vpdmf")) {
+			
+			//
+			// if we're not in a model package, skip it.
+			//
+			if( !p.getBaseName().equals("model") )
 				continue;
-			}
+
+			//
+			// if we're in the edu.isi.bmkeg.vpdmf.model package, 
+			// but not explicitly in the vpdmfSystem model then skip it.
+			//
+			//if( !this.top.getUmlModel().getName().equals("vpdmfSystem") &&
+			//		p.getParent().getBaseName().equals("vpdmf") ) 
+			//	continue;
+					
 			UMLpackage pp = p.getParent();
 			
 			String s = pp.getBaseName();
@@ -239,7 +250,8 @@ public class JavaVpdmfServicesConstructor {
 		for( ViewDefinition vd: this.top.getViews().values()) {
 			if( vd.getType() != ViewDefinition.DATA && 
 					vd.getType() != ViewDefinition.COLLECTION && 
-					vd.getType() != ViewDefinition.LOOKUP) 
+					vd.getType() != ViewDefinition.LOOKUP && 
+					vd.getType() != ViewDefinition.SYSTEM) 
 				continue;
 			UMLclass c = vd.getPrimaryPrimitive().readIdentityClass();
 			if( c.getPkg().readPackageAddress().contains( addr )) {
@@ -365,7 +377,8 @@ public class JavaVpdmfServicesConstructor {
 		for( ViewDefinition vd: this.top.getViews().values()) {
 			if( vd.getType() != ViewDefinition.DATA && 
 					vd.getType() != ViewDefinition.COLLECTION && 
-					vd.getType() != ViewDefinition.LOOKUP) 
+					vd.getType() != ViewDefinition.LOOKUP && 
+					vd.getType() != ViewDefinition.SYSTEM) 
 				continue;
 			UMLclass c = vd.getPrimaryPrimitive().readIdentityClass();
 			if( c.getPkg().readPackageAddress().contains( addr )) {
@@ -542,7 +555,8 @@ public class JavaVpdmfServicesConstructor {
 		for( ViewDefinition vd: this.top.getViews().values()) {
 			if( vd.getType() != ViewDefinition.DATA && 
 					vd.getType() != ViewDefinition.COLLECTION && 
-					vd.getType() != ViewDefinition.LOOKUP) 
+					vd.getType() != ViewDefinition.LOOKUP && 
+					vd.getType() != ViewDefinition.SYSTEM) 
 				continue;
 			UMLclass c = vd.getPrimaryPrimitive().readIdentityClass();
 			if( c.getPkg().readPackageAddress().contains( addr )) {
@@ -675,7 +689,8 @@ public class JavaVpdmfServicesConstructor {
 		for( ViewDefinition vd: this.top.getViews().values()) {
 			if( vd.getType() != ViewDefinition.DATA && 
 					vd.getType() != ViewDefinition.COLLECTION && 
-					vd.getType() != ViewDefinition.LOOKUP) 
+					vd.getType() != ViewDefinition.LOOKUP && 
+					vd.getType() != ViewDefinition.SYSTEM) 
 				continue;
 			UMLclass c = vd.getPrimaryPrimitive().readIdentityClass();
 			if( c.getPkg().readPackageAddress().contains( addr )) {
