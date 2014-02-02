@@ -719,8 +719,8 @@ public class JavaVpdmfServicesConstructor {
 		code += "import org.springframework.stereotype.Repository;\n";
 		code += "import edu.isi.bmkeg.uml.model.UMLclass;\n";
 		code += "import edu.isi.bmkeg.utils.Converters;\n";
+		code += "import edu.isi.bmkeg.vpdmf.controller.queryEngineTools.ChangeEngineImpl;\n";
 		code += "import edu.isi.bmkeg.vpdmf.controller.queryEngineTools.ChangeEngine;\n";
-		code += "import edu.isi.bmkeg.vpdmf.controller.queryEngineTools.VPDMfChangeEngineInterface;\n";
 		code += "import edu.isi.bmkeg.vpdmf.dao.CoreDao;\n";
 		code += "import edu.isi.bmkeg.vpdmf.model.definitions.*;\n";
 		code += "import edu.isi.bmkeg.vpdmf.model.instances.*;\n";
@@ -762,7 +762,7 @@ public class JavaVpdmfServicesConstructor {
 		code += "		return coreDao;\n";
 		code += "	}\n\n";
 		
-		code += "	private VPDMfChangeEngineInterface getCe() {\n";
+		code += "	private ChangeEngine getCe() {\n";
 		code += "		return coreDao.getCe();\n";
 		code += "	}\n";
 		code += "	private VPDMf getTop() {\n";
