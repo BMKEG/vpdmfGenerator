@@ -773,9 +773,9 @@ public class ActionscriptVpdmfInterface {
 
 		code += "		public var id:Number;\n\n"; 
 
-		code += "		public function Delete" + vd.getName() + "ByIdEvent(id:Number)\n";
+		code += "		public function Delete" + vd.getName() + "ByIdEvent(id:Number, bubbles:Boolean=false, cancelable:Boolean=false )\n";
 		code += "		{\n";
-		code += "			super(DELETE_" + vd.getName().toUpperCase() + "_BY_ID);\n";
+		code += "			super(DELETE_" + vd.getName().toUpperCase() + "_BY_ID, bubbles, cancelable);\n";
 		code += "			this.id = id;\n";
 		code += "		}\n\n";
 		
@@ -856,9 +856,9 @@ public class ActionscriptVpdmfInterface {
 
 		code += "		public var id:Number;\n\n"; 
 
-		code += "		public function Find" + vd.getName() + "ByIdEvent(id:Number)\n";
+		code += "		public function Find" + vd.getName() + "ByIdEvent(id:Number, bubbles:Boolean=false, cancelable:Boolean=false )\n";
 		code += "		{\n";
-		code += "			super(FIND_" + vd.getName().toUpperCase() + "_BY_ID);\n";
+		code += "			super(FIND_" + vd.getName().toUpperCase() + "_BY_ID, bubbles, cancelable);\n";
 		code += "			this.id = id;\n";
 		code += "		}\n\n";
 		
@@ -944,9 +944,9 @@ public class ActionscriptVpdmfInterface {
 		code += "		public var object:" + c.getBaseName() + "_qo;\n\n"; 
 
 		code += "		public function Count" + vd.getName() + "Event(object:" 
-				+ c.getBaseName() + "_qo)\n";
+				+ c.getBaseName() + "_qo, bubbles:Boolean=false, cancelable:Boolean=false )\n";
 		code += "		{\n";
-		code += "			super(COUNT_" + vd.getName().toUpperCase() + ");\n";
+		code += "			super(COUNT_" + vd.getName().toUpperCase() + ", bubbles, cancelable);\n";
 		code += "			this.object = object;\n";
 		code += "		}\n\n";
 		
@@ -1026,9 +1026,9 @@ public class ActionscriptVpdmfInterface {
 		code += "		public var object:" + c.getBaseName() + ";\n\n"; 
 
 		code += "		public function Insert" + vd.getName() + "Event(object:" 
-				+ c.getBaseName() + ")\n";
+				+ c.getBaseName() + ", bubbles:Boolean=false, cancelable:Boolean=false )\n";
 		code += "		{\n";
-		code += "			super(INSERT_" + vd.getName().toUpperCase() + ");\n";
+		code += "			super(INSERT_" + vd.getName().toUpperCase() + ", bubbles, cancelable);\n";
 		code += "			this.object = object;\n";
 		code += "		}\n\n";
 		
@@ -1108,9 +1108,9 @@ public class ActionscriptVpdmfInterface {
 		code += "		public var object:" + c.getBaseName() + ";\n\n"; 
 
 		code += "		public function Update" + vd.getName() + "Event(object:" 
-				+ c.getBaseName() + ")\n";
+				+ c.getBaseName() + ", bubbles:Boolean=false, cancelable:Boolean=false )\n";
 		code += "		{\n";
-		code += "			super(UPDATE_" + vd.getName().toUpperCase() + ");\n";
+		code += "			super(UPDATE_" + vd.getName().toUpperCase() + ", bubbles, cancelable);\n";
 		code += "			this.object = object;\n";
 		code += "		}\n\n";
 		
@@ -1190,9 +1190,9 @@ public class ActionscriptVpdmfInterface {
 		code += "		public var object:" + c.getBaseName() + ";\n\n"; 
 
 		code += "		public function Retrieve" + vd.getName() + "Event(object:" 
-				+ c.getBaseName() + ")\n";
+				+ c.getBaseName() + ", bubbles:Boolean=false, cancelable:Boolean=false )\n";
 		code += "		{\n";
-		code += "			super(RETRIEVE_" + vd.getName().toUpperCase() + ");\n";
+		code += "			super(RETRIEVE_" + vd.getName().toUpperCase() + ", bubbles, cancelable);\n";
 		code += "			this.object = object;\n";
 		code += "		}\n\n";
 		
@@ -1278,9 +1278,9 @@ public class ActionscriptVpdmfInterface {
 		code += "		public var cnt:int;\n\n"; 
 
 		code += "		public function Retrieve" + vd.getName() + "PagedEvent(object:" 
-				+ c.getBaseName() + ", offset:int, cnt:int)\n";
+				+ c.getBaseName() + ", offset:int, cnt:int, bubbles:Boolean=false, cancelable:Boolean=false )\n";
 		code += "		{\n";
-		code += "			super(RETRIEVE_" + vd.getName().toUpperCase() + "_PAGED);\n";
+		code += "			super(RETRIEVE_" + vd.getName().toUpperCase() + "_PAGED, bubbles, cancelable);\n";
 		code += "			this.object = object;\n";
 		code += "			this.offset = offset;\n";
 		code += "			this.cnt = cnt;\n";
@@ -1370,9 +1370,9 @@ public class ActionscriptVpdmfInterface {
 		code += "		public var object:" + c.getBaseName() + "_qo;\n\n"; 
 
 		code += "		public function List" + vd.getName() + "Event(object:" 
-				+ c.getBaseName() + "_qo)\n";
+				+ c.getBaseName() + "_qo, bubbles:Boolean=false, cancelable:Boolean=false )\n";
 		code += "		{\n";
-		code += "			super(LIST_" + vd.getName().toUpperCase() + ");\n";
+		code += "			super(LIST_" + vd.getName().toUpperCase() + ", bubbles, cancelable);\n";
 		code += "			this.object = object;\n";
 		code += "		}\n\n";
 		
@@ -1462,9 +1462,9 @@ public class ActionscriptVpdmfInterface {
 		code += "		public var cnt:int;\n\n"; 
 
 		code += "		public function List" + vd.getName() + "PagedEvent(object:" 
-				+ c.getBaseName() + "_qo, offset:int, cnt:int)\n";
+				+ c.getBaseName() + "_qo, offset:int, cnt:int, bubbles:Boolean=false, cancelable:Boolean=false )\n";
 		code += "		{\n";
-		code += "			super(LIST_" + vd.getName().toUpperCase() + "_PAGED);\n";
+		code += "			super(LIST_" + vd.getName().toUpperCase() + "_PAGED, bubbles, cancelable);\n";
 		code += "			this.object = object;\n";
 		code += "			this.offset = offset;\n";
 		code += "			this.cnt = cnt;\n";
