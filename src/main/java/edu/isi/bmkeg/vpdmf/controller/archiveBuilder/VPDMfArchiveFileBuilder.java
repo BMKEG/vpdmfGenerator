@@ -184,9 +184,45 @@ public class VPDMfArchiveFileBuilder extends UMLArchiveFileBuilder {
 
 		String sql = mysql.generateSqlForModel("\\.model\\.");
 
+		//
+		// Add extra SQL data for Spring security tables.
+		// http://springinpractice.com/2010/07/06/spring-security-database-schemas-for-mysql
+		String securitySql = "create table users (" +
+				"username varchar(50) not null primary key, " +
+				"password varchar(50) not null," +
+				"enabled boolean not null) engine = InnoDb;\n";
+		securitySql += "create table authorities (" +
+				"username varchar(50) not null," +
+				"authority varchar(50) not null," +
+				"foreign key (username) references users (username)," +
+				"unique index authorities_idx_1 (username, authority)" +
+				") engine = InnoDb;\n";
+		securitySql += "create table groups (" +
+				"id bigint unsigned not null auto_increment primary key," +
+				"group_name varchar(50) not null" +
+				") engine = InnoDb;\n";
+		securitySql += "create table group_authorities (" +
+				"group_id bigint unsigned not null," +
+				"authority varchar(50) not null," +
+				"foreign key (group_id) references groups (id)" +
+				") engine = InnoDb;\n";
+		securitySql += "create table group_members (" +
+				"id bigint unsigned not null auto_increment primary key," +
+				"username varchar(50) not null," +
+				"group_id bigint unsigned not null," +
+				"foreign key (group_id) references groups (id)" +
+				") engine = InnoDb;\n";
+		securitySql += "create table persistent_logins (" +
+				"username varchar(64) not null," +
+				"series varchar(64) primary key," +
+				"token varchar(64) not null," +
+				"last_used timestamp not null" +
+				") engine = InnoDb;\n";
+		
 		File buildFile = new File(dAddr + "/build.sql");
-		FileUtils.writeStringToFile(buildFile, sql);
+		FileUtils.writeStringToFile(buildFile, sql + "\n" + securitySql);
 		filesInZip.put("sqlFiles/build.sql", buildFile);
+		
 		buildFile.deleteOnExit();
 
 		//
