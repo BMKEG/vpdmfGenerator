@@ -36,9 +36,10 @@ public class VPDMfGeneratorConverters {
 		Properties prop = pomModel.getProperties();
 		if( !prop.containsKey("vpdmf.viewsPath") ||
 				!prop.containsKey("vpdmf.model.type") ||
-				!prop.containsKey("vpdmf.model.path") ) {
+				!prop.containsKey("vpdmf.model.path") ||
+				!prop.containsKey("vpdmf.model.url") ) {
 			throw new Exception("Must specify all these properties: vpdmf.viewsPath, " +
-					"vpdmf.model.type, vpdmf.model.path");
+					"vpdmf.model.type, vpdmf.model.path, vpdmf.model.url");
 		}
 		
 		VpdmfSpec vpdmfSpec = new VpdmfSpec();
@@ -54,6 +55,7 @@ public class VPDMfGeneratorConverters {
 		m.setName( pomModel.getArtifactId() );
 		m.setType( prop.getProperty("vpdmf.model.type") );
 		m.setPath( prop.getProperty("vpdmf.model.path") );
+		m.setUrl( prop.getProperty("vpdmf.model.url") );
 		
 		DataSpec d = new DataSpec();
 		vpdmfSpec.setData(d);

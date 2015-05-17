@@ -27,11 +27,11 @@ import edu.isi.bmkeg.uml.interfaces.UimaUMLInterface;
 import edu.isi.bmkeg.uml.model.UMLmodel;
 import edu.isi.bmkeg.uml.utils.UMLArchiveFileBuilder;
 import edu.isi.bmkeg.utils.Converters;
+import edu.isi.bmkeg.utils.solr.SolrUtils;
 import edu.isi.bmkeg.utils.xml.XmlBindingTools;
 import edu.isi.bmkeg.vpdmf.model.definitions.VPDMf;
 import edu.isi.bmkeg.vpdmf.model.definitions.ViewDefinition;
 import edu.isi.bmkeg.vpdmf.model.definitions.specs.VpdmfSpec;
-import edu.isi.bmkeg.vpdmf.solr.VPDMfSolrUtils;
 import edu.isi.bmkeg.vpdmf.utils.VPDMfConverters;
 import edu.isi.bmkeg.vpdmf.utils.VPDMfExcelEngine;
 
@@ -299,8 +299,8 @@ public class VPDMfArchiveFileBuilder extends UMLArchiveFileBuilder {
 		//
 		// Add SOLR XML schema files for each view in the model .
 		//
-		if( top.getViewsToIndex().size() > 0 ) {
-			VPDMfSolrUtils solr = new VPDMfSolrUtils();
+		/*if( top.getViewsToIndex().size() > 0 ) {
+			SolrUtils solr = new SolrUtils();
 			String[] views = top.getViewsToIndex().toArray(new String[0]);
 			File solrZipFile = new File(dAddr + "/" + top.getUmlModel().getName() + "_solr.zip");
 			solr.buildSolrSpecZip(solrZipFile, views, top);
@@ -308,7 +308,7 @@ public class VPDMfArchiveFileBuilder extends UMLArchiveFileBuilder {
 			filesInZip.put(solrZipFile.getName(), solrZipFile);	
 			solrZipFile.deleteOnExit();
 		
-		}
+		}*/
 		
 		if (varFile.exists()) {
 			varFile.delete();

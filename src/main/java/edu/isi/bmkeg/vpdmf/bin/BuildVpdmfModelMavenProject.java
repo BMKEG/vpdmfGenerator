@@ -72,6 +72,7 @@ public class BuildVpdmfModelMavenProject {
 			// Model file
 			String modelPath = vpdmfSpec.getModel().getPath();
 			String modelType = vpdmfSpec.getModel().getType();
+			String modelUrl = vpdmfSpec.getModel().getUrl();
 			File modelFile = new File(pomFile.getParent() + "/" + modelPath);
 
 			// View directory
@@ -103,6 +104,7 @@ public class BuildVpdmfModelMavenProject {
 
 			if (model == null) {
 				model = m;
+				m.setUrl(modelUrl);
 			} else {
 				model.mergeModel(m);
 			}
@@ -125,7 +127,7 @@ public class BuildVpdmfModelMavenProject {
 		}
 		
 		VPDMfParser vpdmfP = new VPDMfParser();
-		VPDMf top = vpdmfP.buildAllViews(firstSpecs, model, viewFiles,
+		VPDMf top = vpdmfP.buildAllViewsAsRelationalDatabaseModel(firstSpecs, model, viewFiles,
 				solrViews);
 
 		if( firstSpecs.getUimaPackagePattern() != null && firstSpecs.getUimaPackagePattern().length() > 0 ) {

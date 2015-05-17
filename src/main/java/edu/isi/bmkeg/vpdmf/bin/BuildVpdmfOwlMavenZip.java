@@ -16,7 +16,7 @@ import edu.isi.bmkeg.vpdmf.model.definitions.VPDMf;
 import edu.isi.bmkeg.vpdmf.model.definitions.specs.VpdmfSpec;
 import edu.isi.bmkeg.vpdmf.utils.VPDMfParser;
 
-public class BuildVpdmfMysqlMavenZip {
+public class BuildVpdmfOwlMavenZip {
 
 	public static String USAGE = "arguments: [<proj1> <proj2> ... <projN>] <target-dir>  <bmkeg-parent-version>"; 
 
@@ -52,7 +52,7 @@ public class BuildVpdmfMysqlMavenZip {
 		}
 		
 		File zip = new File(args[args.length-2].replaceAll("\\/$", "") + "/" 
-				+ firstSpecs.getArtifactId() + "-mysql-" + firstSpecs.getVersion() 
+				+ firstSpecs.getArtifactId() + "-owl-" + firstSpecs.getVersion() 
 				+ ".zip" );
 		
 		String bmkegParentVersion = args[args.length-1];
@@ -133,12 +133,8 @@ public class BuildVpdmfMysqlMavenZip {
 		model.checkForProxy();
 		
 		VPDMfParser vpdmfP = new VPDMfParser();
-		VPDMf top = vpdmfP.buildAllViewsAsRelationalDatabaseModel(firstSpecs, model, viewFiles, solrViews);	
-		
-		if( firstSpecs.getUimaPackagePattern() != null && firstSpecs.getUimaPackagePattern().length() > 0 ) {
-			top.setUimaPkgPattern(firstSpecs.getUimaPackagePattern());
-		}
-		
+		VPDMf top = vpdmfP.buildAllViewsAsClassModel(firstSpecs, model, viewFiles, solrViews);	
+				
 		if( zip.exists() ) {
 			System.err.println( zip.getPath()+ " already exists. Overwriting old version.");
 			zip.delete();
