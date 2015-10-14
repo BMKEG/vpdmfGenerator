@@ -38,6 +38,7 @@ public class VPDMfGeneratorConverters {
 				!prop.containsKey("vpdmf.model.type") ||
 				!prop.containsKey("vpdmf.model.path") ||
 				!prop.containsKey("vpdmf.model.url") ) {
+			System.out.println(prop.toString());
 			throw new Exception("Must specify all these properties: vpdmf.viewsPath, " +
 					"vpdmf.model.type, vpdmf.model.path, vpdmf.model.url");
 		}

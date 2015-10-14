@@ -127,6 +127,8 @@ public class BuildBasicVpdmfModel {
 		// ~~~~~~~~~~~~~~~~~~~~
 		
 		JavaPojoUmlInterface java = new JavaPojoUmlInterface();
+		java.setBuildQuestions(true);
+		
 		java.setUmlModel(model);
 
 		File tempDir = Files.createTempDir();
@@ -134,8 +136,6 @@ public class BuildBasicVpdmfModel {
 		String dAddr = tempDir.getAbsolutePath();
 		File zip = new File(dAddr + "/temp.zip");
 
-		java.convertToPojoObjects();
-		
 		java.buildMavenProject(zip, null, 
 				group, artifactId + "-pojo", version, 
 				bmkegParentVersion);
@@ -148,9 +148,7 @@ public class BuildBasicVpdmfModel {
 		
 		Converters.copyFile(zip, new File(dir.getPath() + "/" + srcFileName));
 		Converters.unzipIt(zip, new File(dir.getPath() + "/" + srcDirName));
-		
-		java.convertFromPojoObjects();
-		
+				
 		Converters.recursivelyDeleteFiles(tempDir);
 		
 		logger.info("Java POJOs source:" + dir.getPath() + "/" + srcDirName);
@@ -175,19 +173,11 @@ public class BuildBasicVpdmfModel {
 				owlFile.getAbsolutePath());
 		
 		owlUtil.setPrefix(model.getUrl());
-		owlUtil.addOntologyMetadata(o);
+		//owlUtil.addOntologyMetadata(o);
 		
-		Map<String, UMLclass> classMap = model.listClasses(".*model.*");
+		Map<String, UMLclass> classMap = model.listClasses(".*");
 	
 		Set<String> toOmit = new HashSet<String>();
-		toOmit.add("ViewTable");
-		toOmit.add("ViewLinkTable");
-		toOmit.add("vpdmfUser");
-		toOmit.add("KnowledgeBase");
-		toOmit.add("Person");
-		toOmit.add("Term");
-		toOmit.add("Ontology");
-		toOmit.add("TermMapping");
 	
 		//
 		// Add prefixes for each subdirectory containing classes
@@ -202,7 +192,7 @@ public class BuildBasicVpdmfModel {
 			if(prefix.length() == 0) 
 				continue;
 			
-			String url = c.getPkg().readUrl() + "/";
+			String url = c.getPkg().readUrl() + "#";
 			
 			prefixes.put(prefix, url);
 			
