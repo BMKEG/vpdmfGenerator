@@ -20,14 +20,12 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import com.google.common.io.Files;
 
-import edu.isi.bmkeg.uml.interfaces.ActionscriptInterface;
-import edu.isi.bmkeg.uml.interfaces.JavaUmlInterface;
-import edu.isi.bmkeg.uml.interfaces.MysqlUmlInterface;
-import edu.isi.bmkeg.uml.interfaces.UimaUMLInterface;
+import edu.isi.bmkeg.uml.builders.JavaUmlBuilder;
+import edu.isi.bmkeg.uml.builders.MysqlUmlBuilder;
+import edu.isi.bmkeg.uml.builders.UimaUMLBuilder;
 import edu.isi.bmkeg.uml.model.UMLmodel;
 import edu.isi.bmkeg.uml.utils.UMLArchiveFileBuilder;
 import edu.isi.bmkeg.utils.Converters;
-import edu.isi.bmkeg.utils.solr.SolrUtils;
 import edu.isi.bmkeg.utils.xml.XmlBindingTools;
 import edu.isi.bmkeg.vpdmf.model.definitions.VPDMf;
 import edu.isi.bmkeg.vpdmf.model.definitions.ViewDefinition;
@@ -179,7 +177,7 @@ public class VPDMfArchiveFileBuilder extends UMLArchiveFileBuilder {
 		//
 		// Save the sql to this location too.
 		//
-		MysqlUmlInterface mysql = new MysqlUmlInterface();
+		MysqlUmlBuilder mysql = new MysqlUmlBuilder();
 		mysql.setUmlModel(m);
 
 		String sql = mysql.generateSqlForModel("\\.model\\.");
@@ -281,9 +279,9 @@ public class VPDMfArchiveFileBuilder extends UMLArchiveFileBuilder {
 		if( url == null || url.length() == 0)
 			url = "edu.isi.bmkeg";
 		
-		JavaUmlInterface java = new JavaUmlInterface();
+		JavaUmlBuilder java = new JavaUmlBuilder();
 		if( top.getUimaPkgPattern() != null && top.getUimaPkgPattern().length() > 0  ) {
-			java = new UimaUMLInterface( top.getUimaPkgPattern() );
+			java = new UimaUMLBuilder( top.getUimaPkgPattern() );
 		}	
 		
 		java.setUmlModel(m);

@@ -13,12 +13,10 @@ import org.apache.log4j.Logger;
 import org.apache.maven.model.Model;
 import org.semanticweb.owlapi.model.OWLOntology;
 
-import utils.VPDMfGeneratorConverters;
-
 import com.google.common.io.Files;
 
-import edu.isi.bmkeg.uml.interfaces.JavaPojoUmlInterface;
-import edu.isi.bmkeg.uml.interfaces.OwlUmlInterface;
+import edu.isi.bmkeg.uml.builders.JavaPojoUmlBuilder;
+import edu.isi.bmkeg.uml.builders.OwlUmlBuilder;
 import edu.isi.bmkeg.uml.model.UMLclass;
 import edu.isi.bmkeg.uml.model.UMLmodel;
 import edu.isi.bmkeg.uml.sources.UMLModelSimpleParser;
@@ -26,8 +24,10 @@ import edu.isi.bmkeg.uml.utils.OwlAPIUtility;
 import edu.isi.bmkeg.utils.Converters;
 import edu.isi.bmkeg.vpdmf.model.definitions.specs.VpdmfSpec;
 import edu.isi.bmkeg.vpdmf.utils.VPDMfParser;
+import utils.VPDMfGeneratorConverters;
+import utils.VPDMfModelReader;
 
-public class BuildBasicVpdmfModel {
+public class BuildBasicOwl {
 
 	public static String USAGE = "arguments: [<proj1> <proj2> ... <projN>] <target-dir> <bmkeg-parent-version>"; 
 	
@@ -44,120 +44,30 @@ public class BuildBasicVpdmfModel {
 			System.err.println(USAGE);
 			System.exit(-1);
 		}
-		
-		List<File> viewFiles = new ArrayList<File>();
-		List<File> dataFiles = new ArrayList<File>();
-		UMLmodel model = null;
-
-		File firstPom = new File( args[0].replaceAll("\\/$", "") + "/pom.xml" );
-		Model firstPomModel = VPDMfGeneratorConverters.readModelFromPom(firstPom);
-		VpdmfSpec firstSpecs = VPDMfGeneratorConverters.readVpdmfSpecFromPom(firstPomModel);
 
 		List<File> pomFiles = new ArrayList<File>();
 		for (int i = 0; i < args.length - 2; i++) {
 			File pomFile = new File(args[i].replaceAll("\\/$", "") + "/pom.xml");	
 			pomFiles.add(pomFile);
 		}
-
 		File dir = new File(args[args.length - 2]);
-		dir.mkdirs();
-
 		String bmkegParentVersion = args[args.length - 1];
+
+		VPDMfModelReader reader = new VPDMfModelReader(pomFiles, dir, bmkegParentVersion);
 		
-		Iterator<File> it = pomFiles.iterator();
-		while (it.hasNext()) {
-			File pomFile = it.next();
-
-			//
-			// parse the specs files
-			//
-			Model pomModel = VPDMfGeneratorConverters.readModelFromPom(pomFile);
-			VpdmfSpec vpdmfSpec = VPDMfGeneratorConverters.readVpdmfSpecFromPom(pomModel);
-
-			// Model file
-			String modelPath = vpdmfSpec.getModel().getPath();
-			String modelType = vpdmfSpec.getModel().getType();
-			String modelUrl = vpdmfSpec.getModel().getUrl();
-
-			File modelFile = new File(pomFile.getParent() + "/" + modelPath);
-
-			// View directory
-			String viewsPath = vpdmfSpec.getViewsPath();
-			File viewsDir = new File(pomFile.getParent() + "/" + viewsPath);
-			viewFiles.addAll(VPDMfParser.getAllSpecFiles(viewsDir));
-
-			// Data file
-			File data = null;
-			if (vpdmfSpec.getData() != null) {
-				String dataPath = vpdmfSpec.getData().getPath();
-				data = new File(pomFile.getParent() + "/" + dataPath);
-				if (!data.exists())
-					data = null;
-				else
-					dataFiles.add(data);
-			}
-
-			if (data != null)
-				System.out.println("Data File: " + data.getPath());
-
-			UMLModelSimpleParser p = new UMLModelSimpleParser(
-					UMLmodel.XMI_MAGICDRAW);
-			p.parseUMLModelFile(modelFile);
-			UMLmodel m = p.getUmlModels().get(0);
-
-			if (model == null) {
-				
-				model = m;
-				model.setUrl(modelUrl);
-				
-			} else {
-
-				model.mergeModel(m);
-			
-			}
-
-		}
+		List<File> viewFiles = reader.getViewFiles();
+		List<File> dataFiles = reader.getDataFiles();
+		UMLmodel model = reader.getModel();
 		
-		String group = firstSpecs.getGroupId();
-		String artifactId = firstSpecs.getArtifactId();
-		String version = firstSpecs.getVersion();
-
-		// ~~~~~~~~~~~~~~~~~~~~
-		// Java component build
-		// ~~~~~~~~~~~~~~~~~~~~
-		
-		JavaPojoUmlInterface java = new JavaPojoUmlInterface();
-		java.setBuildQuestions(true);
-		
-		java.setUmlModel(model);
-
-		File tempDir = Files.createTempDir();
-		tempDir.deleteOnExit();
-		String dAddr = tempDir.getAbsolutePath();
-		File zip = new File(dAddr + "/temp.zip");
-
-		java.buildMavenProject(zip, null, 
-				group, artifactId + "-pojo", version, 
-				bmkegParentVersion);
-
-		File buildDir = new File(dAddr + "/pojoModel");
-		Converters.unzipIt(zip, buildDir);
-
-		String srcFileName = artifactId + "-pojo-" + version + "-src.jar";
-		String srcDirName = artifactId + "-pojo";
-		
-		Converters.copyFile(zip, new File(dir.getPath() + "/" + srcFileName));
-		Converters.unzipIt(zip, new File(dir.getPath() + "/" + srcDirName));
-				
-		Converters.recursivelyDeleteFiles(tempDir);
-		
-		logger.info("Java POJOs source:" + dir.getPath() + "/" + srcDirName);
+		String group = reader.getGroup();
+		String artifactId = reader.getArtifactId();
+		String version = reader.getVersion();
 		
 		// ~~~~~~~~~~~~~~~~~~~~
 		// Owl component build
 		// ~~~~~~~~~~~~~~~~~~~~
 		
-		OwlUmlInterface owl = new OwlUmlInterface();
+		OwlUmlBuilder owl = new OwlUmlBuilder();
 		owl.setUmlModel(model);
 		owl.convertAttributes();
 		

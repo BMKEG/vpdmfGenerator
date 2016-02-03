@@ -5,24 +5,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.maven.model.DistributionManagement;
 import org.apache.maven.model.Model;
-
-import utils.VPDMfGeneratorConverters;
 
 import com.google.common.io.Files;
 
-import edu.isi.bmkeg.uml.interfaces.ActionscriptInterface;
-import edu.isi.bmkeg.uml.interfaces.JavaUmlInterface;
-import edu.isi.bmkeg.uml.interfaces.UimaUMLInterface;
+import edu.isi.bmkeg.uml.builders.ActionscriptBuilder;
+import edu.isi.bmkeg.uml.builders.JavaUmlBuilder;
+import edu.isi.bmkeg.uml.builders.UimaUMLBuilder;
 import edu.isi.bmkeg.uml.model.UMLmodel;
 import edu.isi.bmkeg.uml.sources.UMLModelSimpleParser;
 import edu.isi.bmkeg.utils.Converters;
-import edu.isi.bmkeg.utils.mvnRunner.LocalMavenInstall;
 import edu.isi.bmkeg.vpdmf.model.definitions.VPDMf;
 import edu.isi.bmkeg.vpdmf.model.definitions.specs.VpdmfSpec;
-import edu.isi.bmkeg.vpdmf.utils.VPDMfConverters;
 import edu.isi.bmkeg.vpdmf.utils.VPDMfParser;
+import utils.VPDMfGeneratorConverters;
 
 public class BuildVpdmfModelMavenProject {
 
@@ -142,9 +138,9 @@ public class BuildVpdmfModelMavenProject {
 		// Java component build
 		// ~~~~~~~~~~~~~~~~~~~~
 		
-		JavaUmlInterface java = new JavaUmlInterface();
+		JavaUmlBuilder java = new JavaUmlBuilder();
 		if( top.getUimaPkgPattern() != null && top.getUimaPkgPattern().length() > 0 ) {
-			java = new UimaUMLInterface(top.getUimaPkgPattern());
+			java = new UimaUMLBuilder(top.getUimaPkgPattern());
 		}
 		java.setUmlModel(model);
 		java.setBuildQuestions(true);
@@ -174,7 +170,7 @@ public class BuildVpdmfModelMavenProject {
 		// Flex component build and deploy
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-		ActionscriptInterface as = new ActionscriptInterface();
+		ActionscriptBuilder as = new ActionscriptBuilder();
 		as.setUmlModel(model);
 
 		zip = new File(dAddr + "/temp2.zip");

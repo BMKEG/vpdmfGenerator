@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 
 import com.google.common.io.Files;
 
-import edu.isi.bmkeg.uml.interfaces.JavaUmlInterface;
+import edu.isi.bmkeg.uml.builders.JavaUmlBuilder;
 import edu.isi.bmkeg.uml.model.UMLclass;
 import edu.isi.bmkeg.uml.model.UMLpackage;
 import edu.isi.bmkeg.utils.Converters;

@@ -5,25 +5,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.apache.maven.model.DistributionManagement;
 import org.apache.maven.model.Model;
-
-import utils.VPDMfGeneratorConverters;
-
-import com.google.common.io.Files;
 
 import edu.isi.bmkeg.uml.model.UMLmodel;
 import edu.isi.bmkeg.uml.sources.UMLModelSimpleParser;
 import edu.isi.bmkeg.utils.Converters;
-import edu.isi.bmkeg.utils.mvnRunner.LocalMavenInstall;
 import edu.isi.bmkeg.vpdmf.controller.archiveBuilder.ActionscriptVpdmfInterface;
 import edu.isi.bmkeg.vpdmf.controller.archiveBuilder.JavaVpdmfServicesConstructor;
 import edu.isi.bmkeg.vpdmf.model.definitions.VPDMf;
 import edu.isi.bmkeg.vpdmf.model.definitions.specs.VpdmfSpec;
-import edu.isi.bmkeg.vpdmf.utils.VPDMfConverters;
 import edu.isi.bmkeg.vpdmf.utils.VPDMfParser;
+import utils.VPDMfGeneratorConverters;
 
 public class BuildVpdmfServicesMavenProject {
 
