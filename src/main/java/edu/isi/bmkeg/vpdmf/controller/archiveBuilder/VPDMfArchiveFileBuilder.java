@@ -288,14 +288,14 @@ public class VPDMfArchiveFileBuilder extends UMLArchiveFileBuilder {
 		
 		java.setUmlModel(m);
 		
-		java.buildJpaMavenProject(srcJar, jar, groupId, artifactId + "-jpa", version, bmkegParentVersion);
+		/*(java.buildJpaMavenProject(srcJar, jar, groupId, artifactId + "-jpa", version, bmkegParentVersion);
 		
 		filesInZip.put(srcJar.getName(), srcJar);
 		srcJar.deleteOnExit();
 		
 		filesInZip.put(jar.getName(), jar);
 		jar.deleteOnExit();
-					 
+		*/			 
 		//
 		// Add SOLR XML schema files for each view in the model .
 		//
